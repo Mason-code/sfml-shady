@@ -1,0 +1,11 @@
+﻿  main.cpp
+C:\Dev\sfml-shady\sfml shady\External\include\SFML\System\Exception.hpp(41,47): warning C4275: non dll-interface class 'std::runtime_error' used as base for dll-interface class 'sf::Exception'
+  (compiling source file 'main.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\stdexcept(100,30):
+      see declaration of 'std::runtime_error'
+      C:\Dev\sfml-shady\sfml shady\External\include\SFML\System\Exception.hpp(41,23):
+      see declaration of 'sf::Exception'
+  
+  sfml shady.vcxproj -> C:\Dev\sfml-shady\sfml shady\x64\Debug\sfml shady.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.
