@@ -5,27 +5,40 @@
 
 int main()
 {
-    // create the window
     sf::RenderWindow window(sf::VideoMode({ 800, 800 }), "My window");
+    sf::Clock clock;
+    sf::Vector2i lastDownPosition = {};
+    sf::Vector2i lastClickPosition = {};
 
-    // run the program as long as the window is open
+    //SHADERS!!!!!!
+    sf::Shader shader;
+    std::string fragAddress = "shaders/tutorialPattern.frag";
+    if (!shader.isAvailable()) 
+        std::cerr << "SHADERS_WILL_NOT_WORK_ON_THIS_SYSTEM" << std::endl;
+    if (!shader.loadFromFile(fragAddress, sf::Shader::Type::Fragment))
+        std::cerr << "ERROR::COULD_NOT_LOAD_SHADERS" << std::endl;
+    sf::Vector2 windowSize = window.getSize();
+    sf::RectangleShape shaderDisplayRect({ static_cast<float>(windowSize.x), static_cast<float>(windowSize.y)});
+
     while (window.isOpen())
     {
-        // check all the window's events that were triggered since the last iteration of the loop
         while (const std::optional event = window.pollEvent())
         {
-            // "close requested" event: we close the window
+
+            if (event->is<sf::Event::MouseButtonPressed>() || sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+                lastDownPosition = sf::Mouse::getPosition();
             if (event->is<sf::Event::Closed>())
                 window.close();
         }
 
-        // clear the window with black color
-        window.clear(sf::Color::Black);
+        // frag data
+        shader.setUniform("iTime", clock.getElapsedTime().asSeconds());
+        shader.setUniform("iMouse_xy", lastDownPosition);
+        shader.setUniform("iMouse_zw", lastClickPosition);
+        shader.setUniform("iResolution", sf::Glsl::Vec2(window.getSize())); 
 
-        // draw everything here...
-        // window.draw(...);
-     
-        // end the current frame
+        window.clear(sf::Color::Black);
+        window.draw(shaderDisplayRect, &shader);
         window.display();
     }
 }
